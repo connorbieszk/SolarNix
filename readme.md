@@ -10,3 +10,8 @@ solarcomet - Small Server ( Windows 7 Era Thinkcentre )
 solarmeteor - Small Server ( Windows 7 Era Thinkcentre )
 
 solarsatellite - must specify flake in build
+
+sudo nix --extra-experimental-features "nix-command flakes" \
+  run 'github:nix-community/disko/latest#disko-install' -- \
+  --flake .#<host> \
+  --disk main /dev/disk/by-id/<disk-id>

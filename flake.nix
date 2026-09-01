@@ -12,11 +12,13 @@
   # Shared Modules
   sharedModules = [
     ./modules/shared/git.nix
+    ./modules/users/pblez.nix
   ];
 
   # Type Specific Modules
   desktopModules = [
-
+    #./modules/desktop/cups.nix
+    #./modules/desktop/sound.nix
   ];
 
   serverModules = [
@@ -24,7 +26,7 @@
   ];
 
   laptopModules = [
-
+    ./modules/laptop/wifi.nix
   ];
 
   wslModules = [
@@ -88,6 +90,15 @@
         type = "wsl";
         modules = [
         ./hosts/solarsatellite/default.nix
+        ];
+      };
+
+      solarpulsar = mkHost {
+        hostname = "solarpulsar";
+        system = "x86_64-linux";
+        type = "laptop";
+        modules = [
+          ./hosts/solarpulsar/default.nix
         ];
       };
     };
