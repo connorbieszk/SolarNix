@@ -11,7 +11,7 @@
   let
   # Shared Modules
   sharedModules = [
-
+    ./modules/shared/git.nix
   ];
 
   # Type Specific Modules
@@ -87,9 +87,7 @@
         system = "x86_64-linux";
         type = "wsl";
         modules = [
-
-
-          ./hosts/solarsatellite/default.nix
+        ./hosts/solarsatellite/default.nix
         ];
       };
     };
