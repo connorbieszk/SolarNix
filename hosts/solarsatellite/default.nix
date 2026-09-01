@@ -1,4 +1,4 @@
-{}:
+{ ... }:
 
 {
   wsl.wslConf.network.hostname = "solarsatellite";
