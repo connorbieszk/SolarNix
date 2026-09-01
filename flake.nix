@@ -87,9 +87,9 @@
         system = "x86_64-linux";
         type = "wsl";
         modules = [
-          {
-            wsl.wslConf.network.hostname = "solarsatellite";
-          }
+
+
+          ./hosts/solarsatellite/default.nix
         ];
       };
     };
