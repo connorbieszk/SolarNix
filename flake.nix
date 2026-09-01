@@ -8,88 +8,90 @@
   };
 
   outputs = { self, nixpkgs, nixos-wsl, ... }:
-    let
-      # Shared Modules
-      sharedModules = [
+  let
+  # Shared Modules
+  sharedModules = [
 
-      ];
+  ];
 
-      # Type Specific Modules
-      desktopModules = [
-        
-      ];
+  # Type Specific Modules
+  desktopModules = [
 
-      serverModules = [
-        
-      ];
+  ];
 
-      laptopModules = [
-        
-      ];
+  serverModules = [
 
-      wslModules = [
-        nixos-wsl.nixosModules.default
+  ];
 
-        {
-          wsl.enable = true;
-          wsl.defaultUser = "pblez";
-        }
-      ];
+  laptopModules = [
 
+  ];
 
-      # Type Module Definitions
-      typeModules = {
-        desktop = desktopModules;
+  wslModules = [
+  nixos-wsl.nixosModules.default
 
-        laptop = desktopModules ++ laptopModules;
+  {
+    wsl.enable = true;
+    wsl.defaultUser = "pblez";
+  }
+  ];
 
-        server = serverModules;
+  # Type Module Definitions
+  typeModules = {
+    desktop = desktopModules;
 
-        wsl = serverModules ++ wslModules;
-      };
+    laptop = desktopModules ++ laptopModules;
 
+    server = serverModules;
 
-      ## Host Helper
-      mkHost =
-        {
-          hostname,
-          system,
-          type,
-          modules ? [],
-        }:
+    wsl = serverModules ++ wslModules;
+  };
 
-        nixpkgs.lib.nixosSystem {
-          inherit system;
+  ## Host Helper
+  mkHost =
+  {
+    hostname,
+    system,
+    type,
+    modules ? [],
+  }:
 
-          modules =
-            [
-              {
-                networking.hostName = hostname; # Set Hostname here
-              }
-            ]
+  nixpkgs.lib.nixosSystem {
+    inherit system;
 
-            ## Add type specific modules
-            ++ (
-              if builtins.hasAttr type typeModules
-              then typeModules.${type}
-              else throw "Unknown host type: ${type}"
-            )
-
-            ## Add the shared modules
-            ++ sharedModules
-
-            ## Add the host specific modules
-            ++ modules;
-        };
-    in
+    modules =
+    [
     {
-      nixosConfigurations = {
-        solarsatellite = mkHost {
-          hostname = "solarsatellite";
-          system = "x86_64-linux";
-          type = "wsl";
-          modules = [];
-        };
+      networking.hostName = hostname; # Set Hostname here
+    }
+    ]
+
+    ## Add type specific modules
+    ++ (
+    if builtins.hasAttr type typeModules
+    then typeModules.${type}
+    else throw "Unknown host type: ${type}"
+    )
+
+    ## Add the shared modules
+    ++ sharedModules
+
+    ## Add the host specific modules
+    ++ modules;
+  };
+  in
+  {
+    nixosConfigurations = {
+      solarsatellite = mkHost {
+        hostname = "solarsatellite";
+        system = "x86_64-linux";
+        type = "wsl";
+        modules = [
+          {
+            wsl.wslConf.network.hostname = "solarsatellite";
+          }
+        ];
       };
     };
+  };
 }
